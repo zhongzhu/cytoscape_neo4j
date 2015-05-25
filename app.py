@@ -1,6 +1,5 @@
 # coding=utf-8
-from flask import Flask, jsonify
-# from flask.ext.jsonpify import jsonify
+from flask import Flask, jsonify, render_template
 from py2neo import Graph
 
 app = Flask(__name__)
@@ -21,7 +20,7 @@ def buildEdges(relationRecord):
 
 @app.route('/')
 def index():
-    return app.send_static_file('index.html')
+    return render_template('index.html')
 
 @app.route('/graph')
 def get_graph():
