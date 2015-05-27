@@ -6,7 +6,7 @@ app = Flask(__name__)
 graph = Graph()
 
 def buildNodes(nodeRecord):
-    data = {"id": str(nodeRecord.n._id), "type": next(iter(nodeRecord.n.labels))}
+    data = {"id": str(nodeRecord.n._id), "label": next(iter(nodeRecord.n.labels))}
     data.update(nodeRecord.n.properties)
 
     return {"data": data}
@@ -24,11 +24,10 @@ def index():
 
 @app.route('/graph')
 def get_graph():
-    nodes = map(buildNodes, graph.cypher.execute('MATCH n return n'))
+    nodes = map(buildNodes, graph.cypher.execute('MATCH (n) RETURN n'))
     edges = map(buildEdges, graph.cypher.execute('MATCH ()-[r]->() RETURN r'))  
 
     return jsonify(elements = {"nodes": nodes, "edges": edges})    
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run()
+    app.run(debug = True)
